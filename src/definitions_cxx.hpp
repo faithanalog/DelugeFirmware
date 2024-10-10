@@ -168,10 +168,13 @@ constexpr int32_t kFadeSpeed = 300;
 constexpr int32_t kNoteRowCollapseSpeed = 150;
 constexpr int32_t kGreyoutSpeed = (300 * 44);
 
-constexpr int32_t kInitialFlashTime = 250;
-constexpr int32_t kFlashTime = 110;
-constexpr int32_t kFastFlashTime = 60;
-constexpr int32_t kSampleMarkerBlinkTime = 200;
+// XXX this is a hack that mostly works, but for clip launching there's a bit
+// of trouble when you do it a lot (doesnt go into cleared state if you already
+// toggled recently, but still flashes right). also I want to BPM-align it.
+constexpr int32_t kInitialFlashTime = 300;
+constexpr int32_t kFlashTime = 2000;
+constexpr int32_t kFastFlashTime = 1500;
+constexpr int32_t kSampleMarkerBlinkTime = 1500;
 
 constexpr int32_t USE_DEFAULT_VELOCITY = 255;
 
