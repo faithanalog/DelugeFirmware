@@ -1093,10 +1093,6 @@ void OLED::scrollingAndBlinkingTimerEvent() {
 		return;
 	}
 
-	if (!sideScrollerDirection) {
-		return; // Probably isn't necessary...
-	}
-
 	bool finished = true;
 
 	for (int32_t s = 0; s < NUM_SIDE_SCROLLERS; s++) {
@@ -1131,15 +1127,23 @@ void OLED::scrollingAndBlinkingTimerEvent() {
 
 	sendMainImage();
 
+	if (sideScrollerDirection <= 0) {
+		uiTimerManager.unsetTimer(TimerName::OLED_SCROLLING_AND_BLINKING);
+		return;
+	}
+
 	int32_t timeInterval;
 	if (!finished) {
 		timeInterval = (sideScrollerDirection >= 0) ? 15 : 5;
 	}
 	else {
-		timeInterval = 400;
-		sideScrollerDirection = -sideScrollerDirection;
+		// We want them to update and render one last time before we stop the
+		// timer.
+		timeInterval = 1000;
+		sideScrollerDirection = 0;
 		for (int32_t s = 0; s < NUM_SIDE_SCROLLERS; s++) {
 			sideScrollers[s].finished = false;
+			sideScrollers[s].pos = 0;
 		}
 	}
 	uiTimerManager.setTimer(TimerName::OLED_SCROLLING_AND_BLINKING, timeInterval);
