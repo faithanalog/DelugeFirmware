@@ -1064,14 +1064,20 @@ void OLED::setupSideScroller(int32_t index, std::string_view text, int32_t start
 }
 
 void OLED::stopScrollingAnimation() {
-	if (sideScrollerDirection) {
-		sideScrollerDirection = 0;
-		for (int32_t s = 0; s < NUM_SIDE_SCROLLERS; s++) {
-			SideScroller* scroller = &sideScrollers[s];
-			scroller->text = NULL;
-		}
-		uiTimerManager.unsetTimer(TimerName::OLED_SCROLLING_AND_BLINKING);
+	// ARTEMIS: my first draft on animating less had a bug: if you open the
+	// instr menu after the thing finishes scrolling, but before it results to
+	// position 0, it will render over that menu. Because sideScrollerDirection
+	// = 0 meant that the unsetTimer won't run in stopScrollingAnimation. I
+	// fixed this by changing stopScrollingAnimation to happen unconditionally,
+	// but TBD whether this causes other problems.
+
+	// ARTEMIS: is this asign necessary?
+	// sideScrollerDirection = 0;
+	for (int32_t s = 0; s < NUM_SIDE_SCROLLERS; s++) {
+		SideScroller* scroller = &sideScrollers[s];
+		scroller->text = NULL;
 	}
+	uiTimerManager.unsetTimer(TimerName::OLED_SCROLLING_AND_BLINKING);
 }
 
 void OLED::timerRoutine() {
