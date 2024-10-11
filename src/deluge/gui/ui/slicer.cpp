@@ -643,8 +643,9 @@ getOut:
 		uint32_t lengthSamplesPerSlice = lengthInSamples / numClips;
 		uint32_t lengthMSPerSlice = lengthSamplesPerSlice * 1000 / sample->sampleRate;
 
-		bool doEnvelopes =
-		    (lengthMSPerSlice >= 90); // Only do fades in and out if we've got at least 100ms to play with
+		// ARTEMIS sorry but I like my chops hard-cut
+		bool doEnvelopes = false;
+		    // (lengthMSPerSlice >= 90); // Only do fades in and out if we've got at least 100ms to play with
 
 		firstRange->sampleHolder.startPos = 0;
 		uint32_t nextDrumStart = lengthInSamples / numClips;
