@@ -706,19 +706,26 @@ void SoundEditor::blinkShortcut() {
 
 	uint32_t counterForNow = shortcutBlinkCounter >> 1;
 
+	// ARTEMIS this is truly some galaxy brain code. I want to 1/2 the main
+	// blink speed, and then 2x the everything speed
+
 
 	// ARTEMIS: hack
 	// if (shortcutBlinkCounter & 1) {
 	if (shortcutBlinkCounter & 1) {
 		// Blink param
 		if ((counterForNow & paramShortcutBlinkFrequency) == 0) {
-			PadLEDs::flashMainPad(currentParamShorcutX, currentParamShorcutY);
+			// ARTEMIS HACK sorry...
+			static bool clockdiv;
+			if (clockdiv) {
+				PadLEDs::flashMainPad(currentParamShorcutX, currentParamShorcutY);
+			}
+			clockdiv = !clockdiv;
 		}
 		// ARTEMIS blink interval here
-		uiTimerManager.setTimer(TimerName::SHORTCUT_BLINK, 180);
-	}
-
-	else {
+		// OG: 180
+		uiTimerManager.setTimer(TimerName::SHORTCUT_BLINK, 20);
+	} else {
 		// Blink source
 		for (int32_t x = 0; x < 2; x++) {
 			for (int32_t y = 0; y < kDisplayHeight; y++) {
@@ -728,8 +735,10 @@ void SoundEditor::blinkShortcut() {
 				}
 			}
 		}
-		uiTimerManager.setTimer(TimerName::SHORTCUT_BLINK, 20 * 6);
+		// OG: 20
+		uiTimerManager.setTimer(TimerName::SHORTCUT_BLINK, 900);
 	}
+	// uiTimerManager.setTimer(TimerName::SHORTCUT_BLINK, 800);
 
 	shortcutBlinkCounter++;
 }

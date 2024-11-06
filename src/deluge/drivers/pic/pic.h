@@ -148,7 +148,21 @@ public:
 	}
 
 	// YYY ARTEMIS my nemesis
-	static void flashMainPad(size_t idx) { setFlashLength(150); send(util::to_underlying(Message::SET_PAD_FLASHING) + idx); }
+	// 6 - short blink
+	// 127 - long blink
+	// 150 - works, long blinkg
+	// 175 - works
+	// 187 - works
+	// 190 - works
+	// 192 - works
+	// 193 - off. going to try bumping timer. nope, still off
+	// 200 - yeah still not working
+	// 250 - short blink sometimes, but feels glitchy
+	// 255 - doesnt work
+	// doesnt actually seem to be delay in ms. 192 corresponds to about 400-500ms of illumination time. maybe it's 2x.
+	// also, when starting into the patch loop, the very first flash is always short. idk why yet. seems to happen regardless
+	// fo whether flashLength is set before or after SET_PAD_FLASHING, and whether its before or after SET_FLASH_COLOR
+	static void flashMainPad(size_t idx) { setFlashLength(192); send(util::to_underlying(Message::SET_PAD_FLASHING) + idx); }
 
 	/**
 	 * @brief Flash a pad using the PIC's built-in timer and colour system
