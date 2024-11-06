@@ -147,7 +147,8 @@ public:
 		send(Message::SET_UART_SPEED, speed);
 	}
 
-	static void flashMainPad(size_t idx) { send(util::to_underlying(Message::SET_PAD_FLASHING) + idx); }
+	// YYY ARTEMIS my nemesis
+	static void flashMainPad(size_t idx) { setFlashLength(150); send(util::to_underlying(Message::SET_PAD_FLASHING) + idx); }
 
 	/**
 	 * @brief Flash a pad using the PIC's built-in timer and colour system

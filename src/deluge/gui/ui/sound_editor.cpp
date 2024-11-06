@@ -543,6 +543,7 @@ void SoundEditor::updateSourceBlinks(MenuItem* currentItem) {
 		for (int32_t y = 0; y < kDisplayHeight; y++) {
 			PatchSource source = modSourceShortcuts[x][y];
 			if (source < kLastPatchSource) {
+				// ARTEMIS
 				sourceShortcutBlinkFrequencies[x][y] =
 				    currentItem->shouldBlinkPatchingSourceShortcut(source, &sourceShortcutBlinkColours[x][y]);
 			}
@@ -705,11 +706,15 @@ void SoundEditor::blinkShortcut() {
 
 	uint32_t counterForNow = shortcutBlinkCounter >> 1;
 
+
+	// ARTEMIS: hack
+	// if (shortcutBlinkCounter & 1) {
 	if (shortcutBlinkCounter & 1) {
 		// Blink param
 		if ((counterForNow & paramShortcutBlinkFrequency) == 0) {
 			PadLEDs::flashMainPad(currentParamShorcutX, currentParamShorcutY);
 		}
+		// ARTEMIS blink interval here
 		uiTimerManager.setTimer(TimerName::SHORTCUT_BLINK, 180);
 	}
 
@@ -723,7 +728,7 @@ void SoundEditor::blinkShortcut() {
 				}
 			}
 		}
-		uiTimerManager.setTimer(TimerName::SHORTCUT_BLINK, 20);
+		uiTimerManager.setTimer(TimerName::SHORTCUT_BLINK, 20 * 6);
 	}
 
 	shortcutBlinkCounter++;
